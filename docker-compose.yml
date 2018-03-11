@@ -1,0 +1,48 @@
+version: '2'
+
+services:
+  spark2:
+    build:
+      context: spark2/.
+    image: jupyter/pyspark-notebook:2.1
+    volumes:
+      - $PWD/myfiles:/mywork/
+    ports:
+      - "8888:8888"
+#      - "5000:5000"
+      - "4040:4040"
+    privileged: true
+    user: root
+    command: sh -c 'cd /root & jupyter notebook --ip 0.0.0.0 --no-browser --allow-root'
+#    command: bash /home/jovyan/work/myfiles/apt-install  & pip2 install -r /home/jovyan/work/myfiles/requirements.txt 
+#    cpu_shares: 8
+#    mem_limit: "1024M"
+    
+#    image: brillozon/pyspark-nb:latest 
+
+
+  spark1:
+    container_name: spark1
+    build:
+      context: spark1/.
+    image: jupyter/pyspark-notebook:1.6
+    volumes:
+      - $PWD/myfiles:/mywork
+    ports:
+      - "8888:8888"
+#      - "5000:5000"
+      - "4040:4040"
+    privileged: true
+    user: root
+    command: sh -c 'cd /root & jupyter notebook --ip 0.0.0.0 --no-browser --allow-root'
+
+  rstudio:
+    build:
+      context: .
+    image: rocker/rstudio:latest 
+#    volumes:
+#      - $PWD/myfiles:/home/jovyan/work/myfiles/
+    ports:
+      - "8787:8787"
+    privileged: true
+    user: root
